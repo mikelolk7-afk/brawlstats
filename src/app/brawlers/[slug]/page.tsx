@@ -5,7 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { StatTable } from '@/components/brawlers/stat-table';
 import { AbilityCard } from '@/components/brawlers/ability-card';
+import { BuildCard } from '@/components/brawlers/build-card';
 import { BRAWLER_META, getBrawlerBySlug } from '@/data/brawlers';
+import { getBuildsForBrawler } from '@/data/builds';
 import { RARITY_COLORS, RARITY_LABELS, CLASS_LABELS } from '@/lib/constants';
 import type { Brawler } from '@/lib/api/types';
 
@@ -134,12 +136,21 @@ export default async function BrawlerDetailPage({ params }: BrawlerDetailPagePro
         </div>
       )}
 
-      {/* Placeholder for builds */}
-      <Card className="opacity-60">
-        <CardContent className="flex items-center justify-center py-8">
-          <p className="text-muted-foreground font-medium">Recommended Builds — Coming Soon</p>
-        </CardContent>
-      </Card>
+      {/* Recommended Builds */}
+      {(() => {
+        const builds = getBuildsForBrawler(brawler.id);
+        if (builds.length === 0) return null;
+        return (
+          <div className="mb-8">
+            <h2 className="mb-3 text-xl font-bold">Recommended Builds</h2>
+            <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
+              {builds.map((build, idx) => (
+                <BuildCard key={idx} build={build} />
+              ))}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

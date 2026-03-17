@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Swords, Search, Trophy } from 'lucide-react';
+import { Swords, Search, Trophy, TrendingUp, BookOpen, Newspaper, Wrench, Award } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EventRotationWidget } from '@/components/home/event-rotation';
 
@@ -9,6 +9,36 @@ const QUICK_LINKS = [
     title: 'Brawlers',
     description: 'Browse all brawlers, filter by rarity and class',
     icon: Swords,
+  },
+  {
+    href: '/meta',
+    title: 'Meta & Tier List',
+    description: 'Current tier rankings, win rates, and pick rates',
+    icon: TrendingUp,
+  },
+  {
+    href: '/meta/builds',
+    title: 'Best Builds',
+    description: 'Recommended Star Power, Gadget & Gear combos',
+    icon: Wrench,
+  },
+  {
+    href: '/guides',
+    title: 'Guides & Tips',
+    description: 'Strategies and in-depth guides for all skill levels',
+    icon: BookOpen,
+  },
+  {
+    href: '/guides/badges',
+    title: 'Badges & Prestige',
+    description: 'Complete badge catalog and prestige progression',
+    icon: Award,
+  },
+  {
+    href: '/news',
+    title: 'News & Updates',
+    description: 'Patch notes, balance changes, and announcements',
+    icon: Newspaper,
   },
   {
     href: '/stats',
@@ -34,7 +64,7 @@ export default function HomePage() {
 
       {/* Quick Links */}
       <section className="mb-12">
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {QUICK_LINKS.map(({ href, title, description, icon: Icon }) => (
             <Link key={href} href={href}>
               <Card className="transition-shadow hover:shadow-lg cursor-pointer h-full">
@@ -57,8 +87,8 @@ export default function HomePage() {
       {/* Coming Soon */}
       <section className="mt-12">
         <h2 className="mb-4 text-xl font-bold">Coming Soon</h2>
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-          {['Meta Tier Lists', 'Guides & Tips', 'Team Comp Builder'].map((title) => (
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+          {['Team Comp Builder', 'Tier List Builder'].map((title) => (
             <Card key={title} className="opacity-60">
               <CardContent className="flex items-center justify-center py-8">
                 <p className="text-muted-foreground font-medium">{title}</p>

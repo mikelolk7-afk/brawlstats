@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
-import { Menu, Moon, Sun, X, Swords, Search, Home } from 'lucide-react';
+import { Menu, Moon, Sun, X, Swords, Search, Home, TrendingUp, BookOpen, Newspaper } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -16,7 +16,10 @@ import {
 const NAV_LINKS = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/brawlers', label: 'Brawlers', icon: Swords },
-  { href: '/stats', label: 'Player Lookup', icon: Search },
+  { href: '/meta', label: 'Meta', icon: TrendingUp },
+  { href: '/guides', label: 'Guides', icon: BookOpen },
+  { href: '/news', label: 'News', icon: Newspaper },
+  { href: '/stats', label: 'Stats', icon: Search },
 ];
 
 export function Header() {
