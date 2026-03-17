@@ -12,6 +12,7 @@ import {
   SheetTitle,
   SheetClose,
 } from '@/components/ui/sheet';
+import { UserMenu } from './user-menu';
 
 const NAV_LINKS = [
   { href: '/', label: 'Home', icon: Home },
@@ -45,6 +46,8 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <UserMenu />
+
           <Button
             variant="ghost"
             size="icon"

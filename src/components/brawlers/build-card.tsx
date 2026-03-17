@@ -1,14 +1,18 @@
+import { Bookmark } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import type { BrawlerBuild } from '@/data/builds';
 import { GAME_MODE_LABELS } from '@/lib/constants';
 
 export interface BuildCardProps {
   build: BrawlerBuild;
   showBrawlerName?: boolean;
+  onSave?: () => void;
+  saved?: boolean;
 }
 
-export function BuildCard({ build, showBrawlerName = false }: BuildCardProps) {
+export function BuildCard({ build, showBrawlerName = false, onSave, saved }: BuildCardProps) {
   const modeLabel = build.gameMode
     ? GAME_MODE_LABELS[build.gameMode] ?? build.gameMode
     : 'General';
@@ -75,6 +79,20 @@ export function BuildCard({ build, showBrawlerName = false }: BuildCardProps) {
         {/* Notes */}
         {build.notes && (
           <p className="text-xs text-muted-foreground leading-relaxed">{build.notes}</p>
+        )}
+
+        {/* Save button */}
+        {onSave && (
+          <Button
+            variant={saved ? 'default' : 'outline'}
+            size="sm"
+            className="w-full text-xs"
+            onClick={onSave}
+            disabled={saved}
+          >
+            <Bookmark className="mr-1.5 h-3 w-3" />
+            {saved ? 'Saved' : 'Save Build'}
+          </Button>
         )}
       </CardContent>
     </Card>

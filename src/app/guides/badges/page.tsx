@@ -1,27 +1,31 @@
 'use client';
 
 import { useState } from 'react';
-import { Award, Filter } from 'lucide-react';
+import { Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BadgeCard } from '@/components/guides/badge-card';
 import { BADGES, BADGE_CATEGORIES } from '@/data/badges';
-import type { BadgeData } from '@/data/badges';
+import { useBadgeProgress } from '@/hooks/useBadgeProgress';
 
 const DIFFICULTIES = [1, 2, 3, 4, 5] as const;
 
 export default function BadgesPage() {
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [difficultyFilter, setDifficultyFilter] = useState<number | null>(null);
+  const [showIncomplete, setShowIncomplete] = useState(false);
+  const { progress, toggleBadge, completedCount, loading: progressLoading } = useBadgeProgress();
 
   const filtered = BADGES.filter((b) => {
     if (categoryFilter !== 'all' && b.category !== categoryFilter) return false;
     if (difficultyFilter !== null && b.difficulty !== difficultyFilter) return false;
+    if (showIncomplete && progress[b.id]) return false;
     return true;
   });
 
   const totalBadges = BADGES.length;
   const categories = Object.entries(BADGE_CATEGORIES);
+  const progressPercent = totalBadges > 0 ? Math.round((completedCount / totalBadges) * 100) : 0;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -34,6 +38,24 @@ export default function BadgesPage() {
           Complete catalog of all {totalBadges} badges. Track your progress and learn how to earn each one.
         </p>
       </div>
+
+      {/* Progress Tracker */}
+      <Card className="mb-8">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium">Your Progress</span>
+            <span className="text-sm text-muted-foreground">
+              {completedCount} / {totalBadges} ({progressPercent}%)
+            </span>
+          </div>
+          <div className="h-3 rounded-full bg-muted overflow-hidden">
+            <div
+              className="h-full rounded-full bg-[var(--color-gold)] transition-all duration-500"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Prestige Overview */}
       <Card className="mb-8">
@@ -109,13 +131,26 @@ export default function BadgesPage() {
               Clear
             </Button>
           )}
+          <span className="mx-1 text-border">|</span>
+          <Button
+            variant={showIncomplete ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setShowIncomplete(!showIncomplete)}
+          >
+            {showIncomplete ? 'Showing Incomplete' : 'Show Incomplete Only'}
+          </Button>
         </div>
       </div>
 
       {/* Badge Grid */}
       <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((badge) => (
-          <BadgeCard key={badge.id} badge={badge} />
+          <BadgeCard
+            key={badge.id}
+            badge={badge}
+            completed={!!progress[badge.id]}
+            onToggle={() => toggleBadge(badge.id)}
+          />
         ))}
       </div>
 
