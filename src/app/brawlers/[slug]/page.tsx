@@ -80,7 +80,7 @@ export default async function BrawlerDetailPage({ params }: BrawlerDetailPagePro
             width={120}
             height={120}
             className="object-contain"
-            priority
+            unoptimized
           />
         </div>
         <div className="text-center sm:text-left">
